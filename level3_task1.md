@@ -28,9 +28,9 @@ The dataset had **no missing values** and no duplicate handling was required. Pr
 
 Three classification models were trained and compared using default parameters:
 
-1. **Logistic Regression** — a linear baseline model
-2. **Decision Tree** — a simple non-linear model, prone to overfitting
-3. **Random Forest** — an ensemble of decision trees, generally more robust
+1. **Logistic Regression** : a linear baseline model
+2. **Decision Tree** : a simple non-linear model, prone to overfitting
+3. **Random Forest** : an ensemble of decision trees, generally more robust
 
 Each was evaluated on the held-out test set using **accuracy, precision, recall, and F1-score** — with F1-score used as the primary comparison metric, since accuracy alone can be misleading on an imbalanced dataset like this one (a model that always predicts "no churn" would already score 85% accuracy while being useless).
 
