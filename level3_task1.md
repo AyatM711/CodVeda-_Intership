@@ -18,7 +18,7 @@ The dataset had **no missing values** and no duplicate handling was required. Pr
 | Target encoding | `Churn` converted from `True`/`False` to `1`/`0` |
 | Binary categorical encoding | `International plan` and `Voice mail plan` mapped from `Yes`/`No` to `1`/`0` |
 | Dropped columns | `State` (51 unique values, high cardinality, low individual predictive signal for a tree/linear model at this dataset size) and `Area code` (only 3 values, not meaningfully related to churn) |
-| Feature scaling | `StandardScaler` applied for Logistic Regression only — tree-based models (Decision Tree, Random Forest) don't require scaling since they split on raw thresholds |
+| Feature scaling | `StandardScaler` applied for Logistic Regression only  tree-based models (Decision Tree, Random Forest) don't require scaling since they split on raw thresholds |
 
 **Class balance:** The target is imbalanced  **14.6% of customers churned** (388 of 2,666). This was addressed by using a **stratified train/test split**, ensuring both sets preserve the same churn ratio.
 
@@ -32,7 +32,7 @@ Three classification models were trained and compared using default parameters:
 2. **Decision Tree** : a simple non-linear model, prone to overfitting
 3. **Random Forest** : an ensemble of decision trees, generally more robust
 
-Each was evaluated on the held-out test set using **accuracy, precision, recall, and F1-score** — with F1-score used as the primary comparison metric, since accuracy alone can be misleading on an imbalanced dataset like this one (a model that always predicts "no churn" would already score 85% accuracy while being useless).
+Each was evaluated on the held-out test set using **accuracy, precision, recall, and F1-score**  with F1-score used as the primary comparison metric, since accuracy alone can be misleading on an imbalanced dataset like this one (a model that always predicts "no churn" would already score 85% accuracy while being useless).
 
 ## Results: Baseline Model Comparison
 
@@ -45,7 +45,7 @@ Each was evaluated on the held-out test set using **accuracy, precision, recall,
 **Interpretation:**
 
 - **Random Forest was the clear winner**, with the best F1-score by a wide margin. It correctly flagged most churners while keeping false alarms very low (98.3% precision).
-- **Logistic Regression struggled significantly with recall (19.2%)** — it missed 4 out of 5 actual churners. This suggests the relationship between the features and churn isn't well captured by a simple linear boundary; there's meaningful non-linearity that tree-based models handle better.
+- **Logistic Regression struggled significantly with recall (19.2%)** it missed 4 out of 5 actual churners. This suggests the relationship between the features and churn isn't well captured by a simple linear boundary; there's meaningful non-linearity that tree-based models handle better.
 - **Decision Tree performed reasonably** but was outperformed by Random Forest on every metric, consistent with Random Forest's key advantage: averaging many trees reduces overfitting compared to a single tree.
 
 ## Hyperparameter Tuning (GridSearchCV)
@@ -75,31 +75,31 @@ Random Forest, as the best baseline model, was tuned further using 5-fold cross-
 | **Actual: No Churn** | 452 | 4 |
 | **Actual: Churn** | 22 | 56 |
 
-**Interpretation:** Out of 78 customers who actually churned in the test set, the tuned model correctly caught 56 (71.8% recall) while only misclassifying 4 loyal customers as churn risks (out of 456) — a strong balance of catching real churners without generating excessive false alarms.
+**Interpretation:** Out of 78 customers who actually churned in the test set, the tuned model correctly caught 56 (71.8% recall) while only misclassifying 4 loyal customers as churn risks (out of 456) a strong balance of catching real churners without generating excessive false alarms.
 
 ## Feature Importance
 
 The tuned Random Forest's feature importances revealed the strongest churn predictors:
 
-1. **Total day charge** — the single strongest predictor
-2. **Total day minutes** — closely tied to charge (as expected, since charge is derived from minutes)
-3. **Customer service calls** — customers calling support more often are meaningfully more likely to churn
-4. **International plan** — subscribers to this plan show a distinctly different churn pattern
+1. **Total day charge** :the single strongest predictor
+2. **Total day minutes** :closely tied to charge (as expected, since charge is derived from minutes)
+3. **Customer service calls** :customers calling support more often are meaningfully more likely to churn
+4. **International plan** : subscribers to this plan show a distinctly different churn pattern
 
-Interestingly, **evening, night, and weekend usage metrics contributed far less** to the model's predictions than daytime usage and service call frequency — suggesting churn is driven primarily by daytime cost sensitivity and support experience, not overall usage volume.
+Interestingly, **evening, night, and weekend usage metrics contributed far less** to the model's predictions than daytime usage and service call frequency  suggesting churn is driven primarily by daytime cost sensitivity and support experience, not overall usage volume.
 
 ## Visual Findings
 <img width="875" height="216" alt="image" src="https://github.com/user-attachments/assets/135d5b51-c3d3-437d-b143-f42a8992d745" />
   
 
 
-- **Left panel:** Bar comparison of all four metrics across the three baseline models — visually confirms Random Forest's consistent lead.
+- **Left panel:** Bar comparison of all four metrics across the three baseline models  visually confirms Random Forest's consistent lead.
 - **Center panel:** Confusion matrix for the tuned Random Forest, showing strong true-negative performance and solid true-positive recall.
 - **Right panel:** Feature importance ranking, highlighting daytime usage and customer service calls as the dominant churn signals.
 
 ## Conclusion
 
-Random Forest — both in its default and tuned forms — substantially outperformed Logistic Regression and Decision Tree for this churn prediction task, primarily due to its ability to capture non-linear relationships between usage patterns and churn behavior. The tuned model achieves strong precision (93%) with reasonable recall (72%), making it suitable for a retention campaign where the business wants to target likely churners without wasting outreach on many false positives.
+Random Forest : both in its default and tuned forms  substantially outperformed Logistic Regression and Decision Tree for this churn prediction task, primarily due to its ability to capture non-linear relationships between usage patterns and churn behavior. The tuned model achieves strong precision (93%) with reasonable recall (72%), making it suitable for a retention campaign where the business wants to target likely churners without wasting outreach on many false positives.
 
 **Business takeaway:** Retention efforts should prioritize customers with high daytime charges and 4+ customer service calls these are the two clearest early-warning signals identified by the model.
 
