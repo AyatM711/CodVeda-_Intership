@@ -20,7 +20,7 @@ The dataset had **no missing values** and no duplicate handling was required. Pr
 | Dropped columns | `State` (51 unique values, high cardinality, low individual predictive signal for a tree/linear model at this dataset size) and `Area code` (only 3 values, not meaningfully related to churn) |
 | Feature scaling | `StandardScaler` applied for Logistic Regression only — tree-based models (Decision Tree, Random Forest) don't require scaling since they split on raw thresholds |
 
-**Class balance:** The target is imbalanced — **14.6% of customers churned** (388 of 2,666). This was addressed by using a **stratified train/test split**, ensuring both sets preserve the same churn ratio.
+**Class balance:** The target is imbalanced  **14.6% of customers churned** (388 of 2,666). This was addressed by using a **stratified train/test split**, ensuring both sets preserve the same churn ratio.
 
 **Split:** 80% train (2,132 records) / 20% test (534 records).
 
